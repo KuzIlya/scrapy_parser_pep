@@ -1,6 +1,8 @@
 import csv
 import datetime as dt
 
+from collections import defaultdict
+
 from settings import (
     FIELDS_NAME, EXPECTED_STATUS,
     FILE_NAME, DIR_OUTPUT, BASE_DIR
@@ -11,7 +13,7 @@ class PepParsePipeline:
     def open_spider(self, spider):
         """Формирование пути до директории results."""
 
-        self.results = {}
+        self.results = defaultdict(int)
         self.result_dir = BASE_DIR / DIR_OUTPUT
         self.result_dir.mkdir(exist_ok=True)
 
@@ -19,7 +21,7 @@ class PepParsePipeline:
         """Подсчет количества статусов."""
 
         pep_status = item['status']
-        EXPECTED_STATUS[pep_status] = EXPECTED_STATUS.get(pep_status, 0) + 1
+        EXPECTED_STATUS[pep_status] += 1
 
         return item
 
